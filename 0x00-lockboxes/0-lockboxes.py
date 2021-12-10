@@ -9,7 +9,6 @@ def canUnlockAll(boxes):
     box_open = [0]
     for key in box_open:
         for box in boxes[key]:
-            print("box", boxes[key])
             if box not in box_open and box < len_box:
                 box_open.append(box)
 
