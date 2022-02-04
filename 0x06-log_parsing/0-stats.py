@@ -82,4 +82,5 @@ if __name__ == '__main__':
         print_log_totals(total_file_size, code_counts)
 
     except (KeyboardInterrupt):
-        print_lo
+        print_log_totals(total_file_size, code_counts)
+        raise
