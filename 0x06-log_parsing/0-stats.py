@@ -1,17 +1,8 @@
 #!/usr/bin/python3
-"""
-0x06. Log Parsing, task 0. Log parsing
-Parses a log of HTTP GET request results from stdin to tabulate the total
-counts of status codes appearing in each response, and the total file size
-across all requests.
-Example of expected log line input:
-128.230.61.246 - [2017-02-05 23:31:23.258076] \
-"GET /projects/260 HTTP/1.1" 301 292
-Fields:
-<IP Address> - [<date>] "<GET request>" <response status code> <file size>
-"""
 
-
+'''
+Reads stdin line by line and computes metrics
+'''
 import sys
 
 if __name__ == "__main__":
