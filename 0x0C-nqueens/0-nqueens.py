@@ -1,53 +1,68 @@
 #!/usr/bin/python3
-"""
-The N queens puzzle is the challenge of placing N non-attacking queens on an
-N×N chessboard
-"""
-from sys import argv, exit
+"""Solution to N Queens problem"""
+import sys
 
 
-def queens(N, row, col, solutions):
-    """
-    Set queens on N-board recursevily to find the solutions
-    """
-    while col < N:
-        if solve(row, col, solutions):
-            solutions.append([row, col])
-            if row == (N - 1):
-                print(solutions)
-                solutions.pop()
-            else:
-                queens(N, row + 1, 0, solutions)
-        col += 1
-    if len(solutions) > 0:
-        solutions.pop()
+def format(board):
+    """Prints according to requirements"""
+    ret = []
+    for i in range(len(board)):
+        colIdx = board[i].index(1)
+        ret.append([i, colIdx])
+    print(ret)
 
 
-def solve(row, col, solutions):
-    """
-    Get valid queens positions
-    """
-    valid = True
-    rows = [s[0] for s in solutions]
-    cols = [s[1] for s in solutions]
-    dgn1 = [s[0] + s[1] for s in solutions]
-    dgn2 = [s[1] - s[0] for s in solutions]
-    if row in rows or col in cols or \
-            (row + col) in dgn1 or (col - row) in dgn2:
-        valid = False
-    return valid
+def isValid(board, curCol, row, n):
+    """Checks if board[row][curCol] is a valid queen"""
+    # Check prev columns
+    for i in range(curCol):
+        if board[row][i] == 1:
+            return False
+    # Check for upper diagonal
+    i = row
+    j = curCol
+    while i >= 0 and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i -= 1
+        j -= 1
+    # Check for lower diagonal
+    i = row
+    j = curCol
+    while i < n and j >= 0:
+        if board[i][j] == 1:
+            return False
+        i += 1
+        j -= 1
+    return True
 
 
-if __name__ == "__main__":
-    length = len(argv)
-    if length != 2:
+def nQueens(board, curCol, n):
+    """Recursive call that places queens in all the
+    posible positions of the board"""
+    stat = False
+    if curCol == n:
+        format(board)
+        return True
+    for row in range(0, n):
+        if isValid(board, curCol, row, n):
+            board[row][curCol] = 1
+            stat = nQueens(board, curCol + 1, n) or stat
+            board[row][curCol] = 0
+    return stat
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
         print("Usage: nqueens N")
         exit(1)
-    if argv[1].isdigit() is False:
+    if not sys.argv[1].isdigit():
         print("N must be a number")
         exit(1)
-    N = int(argv[1])
-    if N < 4:
+    n = int(sys.argv[1])
+    if n < 4:
         print("N must be at least 4")
         exit(1)
-    queens(N, 0, 0, [])
+    board = [[0 for i in range(n)]for j in range(n)]
+    # first col is 0
+    nQueens(board, 0, n)
